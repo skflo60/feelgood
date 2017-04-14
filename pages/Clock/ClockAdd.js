@@ -9,11 +9,12 @@ import { Menu, MainButton, ChildButton} from "react-mfb";
 import ClockActions from "../../assets/javascripts/actions/clock_actions";
 import ClockStore from "../../assets/javascripts/stores/clock_store";
 
-class ClockAdd extends Component {
+class ClockAdd extends Reflux.Component {
 
   constructor(props) {
     super(props);
-    Reflux.connect(ClockStore, "clock");
+    this.state = {}; // our store will add its own state to the component's
+    this.store = ClockStore; // <- just assign the store class itself
     this.m = moment();
     this.days = [{ key: 1, label: "Lun"}, { key: 2, label: "Mar"}, { key: 3, label: "Mer"}, { key: 4, label: "Jeu"}, { key: 5, label: "Ven"}, { key: 6, label: "Sam"}, { key: 7, label: "Dim"}];
     this.initDay();
@@ -28,7 +29,7 @@ class ClockAdd extends Component {
   }
 
   handleSave() {
-    console.log('saved', this.m.format('llll'));
+    console.log(this);
     ClockActions.clockAdd(this.m);
   }
 
@@ -38,7 +39,7 @@ class ClockAdd extends Component {
       return day;
     });
   }
-  
+
   render() {
     const now = new Date().toLocaleTimeString('fr-FR', { hour12: false, hour: "numeric", minute: "numeric"});
     const text = "Ajout d'un réveil";
